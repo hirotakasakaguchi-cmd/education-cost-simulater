@@ -110,7 +110,7 @@ function calculateAdditionalMonthly(shortage, longestRemainingMonths) {
 }
 
 function getDiagnosis(additionalMonthly) {
-  if (additionalMonthly < 10000) {
+  if (additionalMonthly <= 0) {
     return {
       level: 'good',
       title: '🌳 順調です',
@@ -118,7 +118,7 @@ function getDiagnosis(additionalMonthly) {
     };
   }
 
-  if (additionalMonthly < 50000) {
+  if (additionalMonthly < 30000) {
     return {
       level: 'check',
       title: '🌿 育ってきています',
@@ -129,7 +129,7 @@ function getDiagnosis(additionalMonthly) {
   return {
     level: 'grow',
     title: '🌱 これから育てていきましょう',
-    message: '家計や進路の想定を整理すると目標が見えやすくなります。\n\nまずは無理のない金額から始めてみましょう。',
+    message: '教育費準備には改善が必要です。\n\n今のままでは目標との開きが大きいため、\n積立額や進路の想定を一度確認してみましょう。\n\n早めに調整できるほど、\n無理のない準備がしやすくなります。',
   };
 }
 
@@ -150,7 +150,7 @@ function updateResultMessage(shortage, plannedSavings, additionalMonthly, achiev
 
   const diagnosis = getDiagnosis(additionalMonthly);
   const additionalText = shortage <= 0 ? '追加積立は不要です' : `毎月あと${formatPlainYen(additionalMonthly)}必要`;
-  const diagnosisMessage = achievementRate >= 100
+  const diagnosisMessage = achievementRate > 100
     ? '目標額を上回るペースです。\n\nこのまま無理のない範囲で続けていきましょう。'
     : diagnosis.level === 'good'
       ? getGoodMessage(shortage)
