@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教育費シミュレーター</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">子育て家計のかんたんチェック</p>
+      <h1 id="page-title">教育費シミュレーター</h1>
+      <p class="lead">お子さまごとの年齢と進学コースから、教育費の目安・毎月の積立予定・不足額を確認できます。</p>
+    </section>
+
+    <section class="panel" aria-labelledby="input-title">
+      <div class="section-heading">
+        <span class="step-badge">1</span>
+        <h2 id="input-title">条件を入力</h2>
+      </div>
+
+      <form id="simulator-form">
+        <div class="field">
+          <label for="children-count">子どもの人数</label>
+          <select id="children-count" name="children-count">
+            <option value="1">1人</option>
+            <option value="2">2人</option>
+            <option value="3">3人</option>
+          </select>
+        </div>
+
+        <div class="children-list" aria-label="子どもの年齢">
+          <div class="child-card" data-child-card="1">
+            <div class="child-title">
+              <span>1人目</span>
+              <small>現在の年齢</small>
+            </div>
+            <label class="sr-only" for="child-age-1">1人目の年齢</label>
+            <div class="input-with-unit">
+              <input id="child-age-1" class="child-age" type="number" min="0" max="18" value="0" inputmode="numeric">
+              <span>歳</span>
+            </div>
+          </div>
+
+          <div class="child-card" data-child-card="2" hidden>
+            <div class="child-title">
+              <span>2人目</span>
+              <small>現在の年齢</small>
+            </div>
+            <label class="sr-only" for="child-age-2">2人目の年齢</label>
+            <div class="input-with-unit">
+              <input id="child-age-2" class="child-age" type="number" min="0" max="18" value="0" inputmode="numeric">
+              <span>歳</span>
+            </div>
+          </div>
+
+          <div class="child-card" data-child-card="3" hidden>
+            <div class="child-title">
+              <span>3人目</span>
+              <small>現在の年齢</small>
+            </div>
+            <label class="sr-only" for="child-age-3">3人目の年齢</label>
+            <div class="input-with-unit">
+              <input id="child-age-3" class="child-age" type="number" min="0" max="18" value="0" inputmode="numeric">
+              <span>歳</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="education-course">進学コース</label>
+          <select id="education-course" name="education-course">
+            <option value="8000000">全部公立：1人あたり800万円</option>
+            <option value="10000000">大学だけ私立文系：1人あたり1,000万円</option>
+            <option value="12000000">大学だけ私立理系：1人あたり1,200万円</option>
+            <option value="18000000">中学から私立：1人あたり1,800万円</option>
+            <option value="24000000">全部私立：1人あたり2,400万円</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="current-savings">現在の教育費貯金額</label>
+          <div class="input-with-unit">
+            <input id="current-savings" name="current-savings" type="number" min="0" value="0" inputmode="numeric">
+            <span>円</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="monthly-saving">毎月の積立額</label>
+          <div class="input-with-unit">
+            <input id="monthly-saving" name="monthly-saving" type="number" min="0" value="30000" inputmode="numeric">
+            <span>円</span>
+          </div>
+          <p class="hint">ご家庭で続けやすい金額を入力してください。</p>
+        </div>
+      </form>
+    </section>
+
+    <section class="result-panel" aria-live="polite" aria-labelledby="result-title">
+      <div class="section-heading">
+        <span class="step-badge">2</span>
+        <h2 id="result-title">シミュレーション結果</h2>
+      </div>
+
+      <div class="summary-grid">
+        <div class="result-item">
+          <span class="result-label">必要な教育費の目安</span>
+          <strong id="total-cost">0円</strong>
+        </div>
+        <div class="result-item">
+          <span class="result-label">18歳までの積立予定額</span>
+          <strong id="planned-savings">0円</strong>
+        </div>
+        <div class="result-item highlight">
+          <span class="result-label">不足額の目安</span>
+          <strong id="shortage">0円</strong>
+        </div>
+      </div>
+
+      <div class="message-box" id="result-message">
+        入力すると結果が自動で更新されます。
+      </div>
+    </section>
+
+    <section class="note" aria-label="注意書き">
+      <p>このシミュレーターは目安を知るための簡易計算です。実際の教育費は進路、地域、家庭の状況によって変わります。</p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
