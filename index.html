@@ -30,53 +30,84 @@
           </select>
         </div>
 
-        <div class="children-list" aria-label="子どもの年齢">
+        <div class="children-list" aria-label="子どもの情報">
           <div class="child-card" data-child-card="1">
             <div class="child-title">
               <span>1人目</span>
-              <small>現在の年齢</small>
+              <small>年齢と進学コース</small>
             </div>
-            <label class="sr-only" for="child-age-1">1人目の年齢</label>
-            <div class="input-with-unit">
-              <input id="child-age-1" class="child-age" type="number" min="0" max="18" value="0" inputmode="numeric">
-              <span>歳</span>
+            <div class="child-fields">
+              <div>
+                <label for="child-age-1">1人目の年齢</label>
+                <div class="input-with-unit">
+                  <input id="child-age-1" class="child-age" type="number" min="0" max="18" value="0" inputmode="numeric">
+                  <span>歳</span>
+                </div>
+              </div>
+              <div>
+                <label for="child-course-1">1人目の進学コース</label>
+                <select id="child-course-1" class="child-course">
+                  <option value="8000000">全部公立：800万円</option>
+                  <option value="10000000">大学だけ私立文系：1,000万円</option>
+                  <option value="12000000">大学だけ私立理系：1,200万円</option>
+                  <option value="18000000">中学から私立：1,800万円</option>
+                  <option value="24000000">全部私立：2,400万円</option>
+                </select>
+              </div>
             </div>
           </div>
 
           <div class="child-card" data-child-card="2" hidden>
             <div class="child-title">
               <span>2人目</span>
-              <small>現在の年齢</small>
+              <small>年齢と進学コース</small>
             </div>
-            <label class="sr-only" for="child-age-2">2人目の年齢</label>
-            <div class="input-with-unit">
-              <input id="child-age-2" class="child-age" type="number" min="0" max="18" value="0" inputmode="numeric">
-              <span>歳</span>
+            <div class="child-fields">
+              <div>
+                <label for="child-age-2">2人目の年齢</label>
+                <div class="input-with-unit">
+                  <input id="child-age-2" class="child-age" type="number" min="0" max="18" value="0" inputmode="numeric">
+                  <span>歳</span>
+                </div>
+              </div>
+              <div>
+                <label for="child-course-2">2人目の進学コース</label>
+                <select id="child-course-2" class="child-course">
+                  <option value="8000000">全部公立：800万円</option>
+                  <option value="10000000">大学だけ私立文系：1,000万円</option>
+                  <option value="12000000">大学だけ私立理系：1,200万円</option>
+                  <option value="18000000">中学から私立：1,800万円</option>
+                  <option value="24000000">全部私立：2,400万円</option>
+                </select>
+              </div>
             </div>
           </div>
 
           <div class="child-card" data-child-card="3" hidden>
             <div class="child-title">
               <span>3人目</span>
-              <small>現在の年齢</small>
+              <small>年齢と進学コース</small>
             </div>
-            <label class="sr-only" for="child-age-3">3人目の年齢</label>
-            <div class="input-with-unit">
-              <input id="child-age-3" class="child-age" type="number" min="0" max="18" value="0" inputmode="numeric">
-              <span>歳</span>
+            <div class="child-fields">
+              <div>
+                <label for="child-age-3">3人目の年齢</label>
+                <div class="input-with-unit">
+                  <input id="child-age-3" class="child-age" type="number" min="0" max="18" value="0" inputmode="numeric">
+                  <span>歳</span>
+                </div>
+              </div>
+              <div>
+                <label for="child-course-3">3人目の進学コース</label>
+                <select id="child-course-3" class="child-course">
+                  <option value="8000000">全部公立：800万円</option>
+                  <option value="10000000">大学だけ私立文系：1,000万円</option>
+                  <option value="12000000">大学だけ私立理系：1,200万円</option>
+                  <option value="18000000">中学から私立：1,800万円</option>
+                  <option value="24000000">全部私立：2,400万円</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="field">
-          <label for="education-course">進学コース</label>
-          <select id="education-course" name="education-course">
-            <option value="8000000">全部公立：1人あたり800万円</option>
-            <option value="10000000">大学だけ私立文系：1人あたり1,000万円</option>
-            <option value="12000000">大学だけ私立理系：1人あたり1,200万円</option>
-            <option value="18000000">中学から私立：1人あたり1,800万円</option>
-            <option value="24000000">全部私立：1人あたり2,400万円</option>
-          </select>
         </div>
 
         <div class="field">
@@ -88,12 +119,12 @@
         </div>
 
         <div class="field">
-          <label for="monthly-saving">毎月の積立額</label>
+          <label for="monthly-saving">家庭全体の毎月積立額</label>
           <div class="input-with-unit">
             <input id="monthly-saving" name="monthly-saving" type="number" min="0" value="30000" inputmode="numeric">
             <span>円</span>
           </div>
-          <p class="hint">ご家庭で続けやすい金額を入力してください。</p>
+          <p class="hint">子ども1人あたりではなく、家庭全体で毎月積み立てる金額です。</p>
         </div>
       </form>
     </section>
@@ -102,6 +133,22 @@
       <div class="section-heading">
         <span class="step-badge">2</span>
         <h2 id="result-title">シミュレーション結果</h2>
+      </div>
+
+      <div class="diagnosis-card" id="diagnosis-card">
+        <span class="result-label">植物ステージ</span>
+        <strong id="diagnosis-title">入力すると判定が表示されます</strong>
+        <div class="diagnosis-metrics">
+          <div>
+            <span>準備率</span>
+            <strong id="diagnosis-rate">0%</strong>
+          </div>
+          <div>
+            <span>毎月あと必要額</span>
+            <strong id="diagnosis-additional">0円</strong>
+          </div>
+        </div>
+        <p id="diagnosis-message">条件を入力すると、教育費準備の状況を確認できます。</p>
       </div>
 
       <div class="summary-grid">
@@ -113,8 +160,8 @@
           <span class="result-label">18歳までの積立予定額</span>
           <strong id="planned-savings">0円</strong>
         </div>
-        <div class="result-item highlight">
-          <span class="result-label">不足額の目安</span>
+        <div class="result-item shortage-result">
+          <span class="result-label">不足額</span>
           <strong id="shortage">0円</strong>
         </div>
       </div>
@@ -122,6 +169,44 @@
       <div class="message-box" id="result-message">
         入力すると結果が自動で更新されます。
       </div>
+
+      <details class="calculation-details" open>
+        <summary>計算根拠を見る</summary>
+        <div class="details-body">
+          <div class="details-row full">
+            <span>子どもごとの教育費</span>
+            <div id="child-cost-breakdown" class="child-breakdown"></div>
+          </div>
+          <div class="details-row">
+            <span>教育費合計</span>
+            <strong id="detail-total-cost">0円</strong>
+          </div>
+          <div class="details-row">
+            <span>現在の貯金額</span>
+            <strong id="detail-current-savings">0円</strong>
+          </div>
+          <div class="details-row">
+            <span>毎月積立額</span>
+            <strong id="detail-monthly-saving">0円</strong>
+          </div>
+          <div class="details-row">
+            <span>一番下の子が18歳になるまでの残り月数</span>
+            <strong id="detail-remaining-months">0か月</strong>
+          </div>
+          <div class="details-row">
+            <span>18歳までの積立予定額</span>
+            <strong id="detail-planned-savings">0円</strong>
+          </div>
+          <div class="details-row">
+            <span>毎月追加必要額</span>
+            <strong id="detail-additional-monthly">0円</strong>
+          </div>
+          <div class="details-row emphasis">
+            <span>不足額</span>
+            <strong id="detail-shortage">0円</strong>
+          </div>
+        </div>
+      </details>
     </section>
 
     <section class="note" aria-label="注意書き">
