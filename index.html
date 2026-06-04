@@ -126,6 +126,24 @@
           </div>
           <p class="hint">子ども1人あたりではなく、家庭全体で毎月積み立てる金額です。</p>
         </div>
+
+        <fieldset class="field method-field">
+          <legend>積立方法</legend>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="saving-method" value="deposit" checked>
+              <span>貯金</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="saving-method" value="insurance">
+              <span>学資保険</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="saving-method" value="nisa">
+              <span>NISA</span>
+            </label>
+          </div>
+        </fieldset>
       </form>
     </section>
 
@@ -157,7 +175,8 @@
           <strong id="total-cost">0円</strong>
         </div>
         <div class="result-item">
-          <span class="result-label">18歳までの積立予定額</span>
+          <span class="result-meta" id="result-saving-method">積立方法：貯金</span>
+          <span class="result-label">18歳時点の予想資産額</span>
           <strong id="planned-savings">0円</strong>
         </div>
         <div class="result-item shortage-result">
@@ -168,6 +187,38 @@
 
       <div class="message-box" id="result-message">
         入力すると結果が自動で更新されます。
+      </div>
+
+      <div class="nisa-note" id="nisa-note" hidden>
+        <p>※年利5%で試算しています</p>
+        <p>※運用成果を保証するものではありません</p>
+      </div>
+
+      <div class="result-card-actions">
+        <button type="button" id="create-result-card">結果カードを作成</button>
+      </div>
+
+      <div class="share-card-panel" id="share-card-panel" hidden>
+        <div class="share-card-preview" id="share-card-preview" aria-label="結果カードのプレビュー">
+          <div class="watercolor-tree" aria-hidden="true">
+            <span class="leaf leaf-1"></span>
+            <span class="leaf leaf-2"></span>
+            <span class="leaf leaf-3"></span>
+            <span class="leaf leaf-4"></span>
+            <span class="leaf leaf-5"></span>
+            <span class="trunk"></span>
+          </div>
+          <div class="share-card-content">
+            <p class="share-stage" id="share-stage">あと少しです</p>
+            <p class="share-label">教育費準備率</p>
+            <p class="share-rate" id="share-rate">0%</p>
+            <p class="share-label">毎月あと</p>
+            <p class="share-additional" id="share-additional">0円</p>
+            <div class="share-message" id="share-message">診断結果がここに入ります。</div>
+            <p class="share-brand">education-cost-simulator</p>
+          </div>
+        </div>
+        <a class="download-card" id="download-result-card" href="#" download="education-cost-result.png">カード画像を保存</a>
       </div>
 
       <details class="calculation-details" open>
@@ -190,11 +241,15 @@
             <strong id="detail-monthly-saving">0円</strong>
           </div>
           <div class="details-row">
+            <span>積立方法</span>
+            <strong id="detail-saving-method">貯金</strong>
+          </div>
+          <div class="details-row">
             <span>一番下の子が18歳になるまでの残り月数</span>
             <strong id="detail-remaining-months">0か月</strong>
           </div>
           <div class="details-row">
-            <span>18歳までの積立予定額</span>
+            <span>18歳時点の予想資産額</span>
             <strong id="detail-planned-savings">0円</strong>
           </div>
           <div class="details-row">
