@@ -1,25 +1,24 @@
 const childrenCountInput = document.querySelector('#children-count');
-const currentSavingsInput = document.querySelector('#current-savings');
-const monthlySavingInput = document.querySelector('#monthly-saving');
-const savingMethodInputs = document.querySelectorAll('input[name="saving-method"]');
+const currentSavingsInputs = document.querySelectorAll('.current-savings-input');
+const monthlySavingInputs = document.querySelectorAll('.monthly-saving-input');
 const childCards = document.querySelectorAll('[data-child-card]');
 const childAgeInputs = document.querySelectorAll('.child-age');
-const childCourseInputs = document.querySelectorAll('.child-course');
+const educationStageSelects = document.querySelectorAll('.education-stage-select');
 const diagnosisCard = document.querySelector('#diagnosis-card');
 const diagnosisTitleOutput = document.querySelector('#diagnosis-title');
 const diagnosisRateOutput = document.querySelector('#diagnosis-rate');
 const diagnosisAdditionalOutput = document.querySelector('#diagnosis-additional');
 const diagnosisMessageOutput = document.querySelector('#diagnosis-message');
 const totalCostOutput = document.querySelector('#total-cost');
-const resultSavingMethodOutput = document.querySelector('#result-saving-method');
 const plannedSavingsOutput = document.querySelector('#planned-savings');
 const shortageResultCard = document.querySelector('.shortage-result');
 const shortageOutput = document.querySelector('#shortage');
 const resultMessage = document.querySelector('#result-message');
-const nisaNote = document.querySelector('#nisa-note');
 const createResultCardButton = document.querySelector('#create-result-card');
 const shareCardPanel = document.querySelector('#share-card-panel');
-const downloadResultCard = document.querySelector('#download-result-card');
+const saveResultCardButton = document.querySelector('#save-result-card');
+const saveCardHelp = document.querySelector('#save-card-help');
+const generatedCardImage = document.querySelector('#generated-card-image');
 const shareStage = document.querySelector('#share-stage');
 const shareRate = document.querySelector('#share-rate');
 const shareAdditional = document.querySelector('#share-additional');
@@ -28,7 +27,6 @@ const childCostBreakdown = document.querySelector('#child-cost-breakdown');
 const detailTotalCost = document.querySelector('#detail-total-cost');
 const detailCurrentSavings = document.querySelector('#detail-current-savings');
 const detailMonthlySaving = document.querySelector('#detail-monthly-saving');
-const detailSavingMethod = document.querySelector('#detail-saving-method');
 const detailRemainingMonths = document.querySelector('#detail-remaining-months');
 const detailPlannedSavings = document.querySelector('#detail-planned-savings');
 const detailAdditionalMonthly = document.querySelector('#detail-additional-monthly');
@@ -36,22 +34,82 @@ const detailShortage = document.querySelector('#detail-shortage');
 
 const TARGET_AGE = 18;
 
+const EDUCATION_COSTS = {
+  elementary: {
+    label: '小学校',
+    options: {
+      public: {
+        label: '公立',
+        cost: 2000000,
+      },
+      private: {
+        label: '私立',
+        cost: 10000000,
+      },
+    },
+  },
+  juniorHigh: {
+    label: '中学校',
+    options: {
+      public: {
+        label: '公立',
+        cost: 1500000,
+      },
+      private: {
+        label: '私立',
+        cost: 4000000,
+      },
+    },
+  },
+  highSchool: {
+    label: '高校',
+    options: {
+      public: {
+        label: '公立',
+        cost: 1500000,
+      },
+      private: {
+        label: '私立',
+        cost: 3000000,
+      },
+    },
+  },
+  university: {
+    label: '大学',
+    options: {
+      national: {
+        label: '国公立',
+        cost: 3000000,
+      },
+      privateHumanities: {
+        label: '私立文系',
+        cost: 5000000,
+      },
+      privateScience: {
+        label: '私立理系',
+        cost: 7000000,
+      },
+    },
+  },
+};
+
 const SAVING_METHODS = {
   deposit: {
-    label: '貯金',
+    label: '預金',
     annualRate: 0,
-  },
-  insurance: {
-    label: '学資保険',
-    annualRate: 0.005,
   },
   nisa: {
     label: 'NISA',
     annualRate: 0.05,
   },
+  insurance: {
+    label: '学資保険',
+    annualRate: 0.005,
+  },
 };
 
 let latestResult = null;
+let latestCardDataUrl = '';
 
 if (!CanvasRenderingContext2D.prototype.roundRect) {
   CanvasRenderingContext2D.prototype.roundRect = function roundRect(x, y, width, height, radius) {
@@ -80,6 +138,15 @@ function getNumberValue(input, fallback = 0) {
   return Number.isFinite(value) && value >= 0 ? value : fallback;
 }
 
+function getTotalInputValue(inputs) {
+  return [...inputs].reduce((total, input) => total + getNumberValue(input, 0), 0);
+}
+
+function getMethodInputValue(inputs, method) {
+  const input = [...inputs].find((item) => item.id.endsWith(`-${method}`));
+  return input ? getNumberValue(input, 0) : 0;
+}
+
 function formatYen(amount) {
   return yenFormatter.format(Math.max(0, Math.ceil(amount)));
 }
@@ -101,17 +168,8 @@ function formatPercent(rate) {
   }).format(Math.min(100, Math.max(0, Math.floor(rate))))}%`;
 }
 
-function getCourseLabel(select) {
-  return select.options[select.selectedIndex].textContent.split('：')[0];
-}
-
 function getVisibleChildrenCount() {
   return Math.min(3, Math.max(1, getNumberValue(childrenCountInput, 1)));
-}
-
-function getSavingMethod() {
-  const checkedInput = [...savingMethodInputs].find((input) => input.checked);
-  return SAVING_METHODS[checkedInput?.value] ?? SAVING_METHODS.deposit;
 }
 
 function updateChildCards() {
@@ -123,19 +181,47 @@ function updateChildCards() {
   });
 }
 
+function getChildStageSelections(childNumber) {
+  return [...document.querySelectorAll(`[data-child-card="${childNumber}"] .education-stage-select`)];
+}
+
+function calculateChildEducationPlan(childNumber) {
+  const stages = getChildStageSelections(childNumber).map((select) => {
+    const stage = select.dataset.stage;
+    const selectedValue = select.value;
+    const stageSetting = EDUCATION_COSTS[stage];
+    const option = stageSetting.options[selectedValue];
+
+    return {
+      stage,
+      stageLabel: stageSetting.label,
+      optionLabel: option.label,
+      cost: option.cost,
+    };
+  });
+
+  return {
+    stages,
+    courseCost: stages.reduce((total, stage) => total + stage.cost, 0),
+    courseLabel: stages.map((stage) => `${stage.stageLabel}：${stage.optionLabel}`).join(' / '),
+  };
+}
+
 function getChildPlans(count) {
   const plans = [];
 
   for (let index = 0; index < count; index += 1) {
+    const childNumber = index + 1;
     const age = getNumberValue(childAgeInputs[index], 0);
-    const courseCost = getNumberValue(childCourseInputs[index], 8000000);
+    const educationPlan = calculateChildEducationPlan(childNumber);
     const remainingMonths = Math.max(0, (TARGET_AGE - age) * 12);
 
     plans.push({
-      childNumber: index + 1,
+      childNumber,
       age,
-      courseCost,
-      courseLabel: getCourseLabel(childCourseInputs[index]),
+      courseCost: educationPlan.courseCost,
+      courseLabel: educationPlan.courseLabel,
+      stages: educationPlan.stages,
       remainingMonths,
     });
   }
@@ -143,11 +229,8 @@ function getChildPlans(count) {
   return plans;
 }
 
-function calculatePlannedSavings(plans) {
-  const currentSavings = getNumberValue(currentSavingsInput, 0);
-  const monthlySaving = getNumberValue(monthlySavingInput, 0);
-  const longestRemainingMonths = Math.max(0, ...plans.map((plan) => plan.remainingMonths));
-  const monthlyRate = getSavingMethod().annualRate / 12;
+function calculateFutureValue(currentSavings, monthlySaving, longestRemainingMonths, annualRate) {
+  const monthlyRate = annualRate / 12;
 
   if (monthlyRate <= 0) {
     return currentSavings + monthlySaving * longestRemainingMonths;
@@ -157,6 +240,16 @@ function calculatePlannedSavings(plans) {
   const futureMonthlySavings = monthlySaving * (((1 + monthlyRate) ** longestRemainingMonths - 1) / monthlyRate);
 
   return futureCurrentSavings + futureMonthlySavings;
+}
+
+function calculatePlannedSavings(plans) {
+  const longestRemainingMonths = Math.max(0, ...plans.map((plan) => plan.remainingMonths));
+
+  return Object.entries(SAVING_METHODS).reduce((total, [method, setting]) => {
+    const currentSavings = getMethodInputValue(currentSavingsInputs, method);
+    const monthlySaving = getMethodInputValue(monthlySavingInputs, method);
+    return total + calculateFutureValue(currentSavings, monthlySaving, longestRemainingMonths, setting.annualRate);
+  }, 0);
 }
 
 function calculateAdditionalMonthly(shortage, longestRemainingMonths) {
@@ -274,11 +367,11 @@ function getShareAdditionalText(shortage, additionalMonthly) {
   }).format(manYen)}万円`;
 }
 
-function updateCalculationDetails(plans, totalCost, currentSavings, monthlySaving, savingMethod, longestRemainingMonths, plannedSavings, additionalMonthly, shortage) {
+function updateCalculationDetails(plans, totalCost, currentSavings, monthlySaving, longestRemainingMonths, plannedSavings, additionalMonthly, shortage) {
   childCostBreakdown.innerHTML = plans
     .map((plan) => `
       <div class="child-breakdown-item">
-        <span>${plan.childNumber}人目（${plan.age}歳・${plan.courseLabel}）</span>
+        <span>${plan.childNumber}人目（${plan.age}歳）<br>${plan.courseLabel}</span>
         <strong>${formatManYen(plan.courseCost)}</strong>
       </div>
     `)
@@ -287,7 +380,6 @@ function updateCalculationDetails(plans, totalCost, currentSavings, monthlySavin
   detailTotalCost.textContent = formatManYen(totalCost);
   detailCurrentSavings.textContent = formatManYen(currentSavings);
   detailMonthlySaving.textContent = formatPlainYen(monthlySaving);
-  detailSavingMethod.textContent = `${savingMethod.label}（年利${savingMethod.annualRate * 100}%）`;
   detailRemainingMonths.textContent = `${longestRemainingMonths}か月`;
   detailPlannedSavings.textContent = formatManYen(plannedSavings);
   detailAdditionalMonthly.textContent = shortage <= 0 ? '追加積立は不要です' : formatPlainYen(additionalMonthly);
@@ -296,9 +388,8 @@ function updateCalculationDetails(plans, totalCost, currentSavings, monthlySavin
 
 function calculateEducationCost() {
   const count = getVisibleChildrenCount();
-  const currentSavings = getNumberValue(currentSavingsInput, 0);
-  const monthlySaving = getNumberValue(monthlySavingInput, 0);
-  const savingMethod = getSavingMethod();
+  const currentSavings = getTotalInputValue(currentSavingsInputs);
+  const monthlySaving = getTotalInputValue(monthlySavingInputs);
   const plans = getChildPlans(count);
   const totalCost = plans.reduce((sum, plan) => sum + plan.courseCost, 0);
   const longestRemainingMonths = Math.max(0, ...plans.map((plan) => plan.remainingMonths));
@@ -311,14 +402,12 @@ function calculateEducationCost() {
   const diagnosisMessage = diagnosis.message;
 
   totalCostOutput.textContent = formatManYen(totalCost);
-  resultSavingMethodOutput.textContent = `積立方法：${savingMethod.label}`;
   plannedSavingsOutput.textContent = formatManYen(plannedSavings);
-  nisaNote.hidden = savingMethod !== SAVING_METHODS.nisa;
   shortageOutput.innerHTML = shortage <= 0
     ? '<span class="shortage-line">不足はありません</span>'
     : `<span class="shortage-line">あと</span><span class="shortage-amount">${formatManYen(shortage)}</span><span class="shortage-line">不足しています</span>`;
   updateResultMessage(shortage, plannedSavings, additionalMonthly, achievementRate, ageGroup);
-  updateCalculationDetails(plans, totalCost, currentSavings, monthlySaving, savingMethod, longestRemainingMonths, plannedSavings, additionalMonthly, shortage);
+  updateCalculationDetails(plans, totalCost, currentSavings, monthlySaving, longestRemainingMonths, plannedSavings, additionalMonthly, shortage);
 
   latestResult = {
     stage: getShareStageText(diagnosis.title),
@@ -465,22 +554,156 @@ function drawResultCardImage(result) {
   return canvas.toDataURL('image/png');
 }
 
+function dataUrlToFile(dataUrl, fileName) {
+  const [metadata, data] = dataUrl.split(',');
+  const mimeType = metadata.match(/data:(.*);base64/)?.[1] ?? 'image/png';
+  const binary = atob(data);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+
+  return new File([bytes], fileName, { type: mimeType });
+}
+
+function removeDuplicateResultCardElements() {
+  [
+    '#share-card-panel',
+    '#share-card-preview',
+    '#save-result-card',
+    '#save-card-help',
+    '#generated-card-image',
+  ].forEach((selector) => {
+    document.querySelectorAll(selector).forEach((element, index) => {
+      if (index > 0) {
+        element.remove();
+      }
+    });
+  });
+}
+
+function clearResultCardView() {
+  removeDuplicateResultCardElements();
+  latestCardDataUrl = '';
+  generatedCardImage.removeAttribute('src');
+  generatedCardImage.hidden = true;
+  generatedCardImage.style.display = 'none';
+  saveCardHelp.hidden = true;
+  saveCardHelp.style.display = 'none';
+  shareCardPanel.hidden = true;
+}
+
 function createResultCard() {
   if (!latestResult) {
     return;
   }
 
+  clearResultCardView();
   shareStage.textContent = latestResult.stage;
   shareRate.textContent = latestResult.rate;
   shareAdditional.textContent = latestResult.additional;
   shareMessage.textContent = latestResult.message;
-  downloadResultCard.href = drawResultCardImage(latestResult);
+  latestCardDataUrl = drawResultCardImage(latestResult);
+  generatedCardImage.src = latestCardDataUrl;
+  generatedCardImage.hidden = true;
+  generatedCardImage.style.display = 'none';
+  saveCardHelp.hidden = true;
+  saveCardHelp.style.display = 'none';
   shareCardPanel.hidden = false;
+}
+
+function showImageSaveFallback() {
+  if (!latestCardDataUrl) {
+    createResultCard();
+  }
+
+  generatedCardImage.hidden = false;
+  generatedCardImage.style.display = 'block';
+  saveCardHelp.hidden = false;
+  saveCardHelp.style.display = 'block';
+}
+
+async function saveResultCard() {
+  if (!latestCardDataUrl) {
+    createResultCard();
+  }
+
+  if (!latestCardDataUrl) {
+    return;
+  }
+
+  const file = dataUrlToFile(latestCardDataUrl, 'education-cost-result.png');
+  const shareData = {
+    files: [file],
+    title: '教育費準備診断結果',
+  };
+
+  if (navigator.share && navigator.canShare?.(shareData)) {
+    try {
+      await navigator.share(shareData);
+      return;
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        return;
+      }
+    }
+  }
+
+  showImageSaveFallback();
 }
 
 function updateSimulator() {
   updateChildCards();
   calculateEducationCost();
+}
+
+function applyStageValues(childNumber, values) {
+  Object.entries(values).forEach(([stage, value]) => {
+    const select = document.querySelector(`[data-child-card="${childNumber}"] .education-stage-select[data-stage="${stage}"]`);
+    if (select) {
+      select.value = value;
+    }
+  });
+}
+
+function applyLegacyCourseValue(childNumber, courseCost) {
+  const legacyCourseMap = {
+    8000000: {
+      elementary: 'public',
+      juniorHigh: 'public',
+      highSchool: 'public',
+      university: 'national',
+    },
+    10000000: {
+      elementary: 'public',
+      juniorHigh: 'public',
+      highSchool: 'public',
+      university: 'privateHumanities',
+    },
+    12000000: {
+      elementary: 'public',
+      juniorHigh: 'public',
+      highSchool: 'public',
+      university: 'privateScience',
+    },
+    18000000: {
+      elementary: 'public',
+      juniorHigh: 'private',
+      highSchool: 'private',
+      university: 'privateHumanities',
+    },
+    24000000: {
+      elementary: 'private',
+      juniorHigh: 'private',
+      highSchool: 'private',
+      university: 'privateScience',
+    },
+  };
+
+  if (legacyCourseMap[courseCost]) {
+    applyStageValues(childNumber, legacyCourseMap[courseCost]);
+  }
 }
 
 function applyQueryParams() {
@@ -490,7 +713,6 @@ function applyQueryParams() {
   const courses = params.get('courses')?.split(',');
   const savings = params.get('savings');
   const monthly = params.get('monthly');
-  const method = params.get('method');
 
   if (children) {
     childrenCountInput.value = children;
@@ -503,39 +725,32 @@ function applyQueryParams() {
   });
 
   courses?.forEach((course, index) => {
-    if (childCourseInputs[index]) {
-      childCourseInputs[index].value = course;
-    }
+    applyLegacyCourseValue(index + 1, Number(course));
   });
 
   if (savings) {
-    currentSavingsInput.value = savings;
+    currentSavingsInputs[0].value = savings;
   }
 
   if (monthly) {
-    monthlySavingInput.value = monthly;
+    monthlySavingInputs[0].value = monthly;
   }
 
-  if (method && SAVING_METHODS[method]) {
-    savingMethodInputs.forEach((input) => {
-      input.checked = input.value === method;
-    });
-  }
 }
 
 [
   childrenCountInput,
-  currentSavingsInput,
-  monthlySavingInput,
-  ...savingMethodInputs,
+  ...currentSavingsInputs,
+  ...monthlySavingInputs,
   ...childAgeInputs,
-  ...childCourseInputs,
+  ...educationStageSelects,
 ].forEach((input) => {
   input.addEventListener('input', updateSimulator);
   input.addEventListener('change', updateSimulator);
 });
 
 createResultCardButton.addEventListener('click', createResultCard);
+saveResultCardButton.addEventListener('click', saveResultCard);
 
 applyQueryParams();
 updateSimulator();

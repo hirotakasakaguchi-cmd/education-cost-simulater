@@ -34,7 +34,7 @@
           <div class="child-card" data-child-card="1">
             <div class="child-title">
               <span>1人目</span>
-              <small>年齢と進学コース</small>
+              <small>年齢と進学先</small>
             </div>
             <div class="child-fields">
               <div>
@@ -44,15 +44,36 @@
                   <span>歳</span>
                 </div>
               </div>
-              <div>
-                <label for="child-course-1">1人目の進学コース</label>
-                <select id="child-course-1" class="child-course">
-                  <option value="8000000">全部公立：800万円</option>
-                  <option value="10000000">大学だけ私立文系：1,000万円</option>
-                  <option value="12000000">大学だけ私立理系：1,200万円</option>
-                  <option value="18000000">中学から私立：1,800万円</option>
-                  <option value="24000000">全部私立：2,400万円</option>
-                </select>
+              <div class="education-stage-grid" aria-label="1人目の進学先">
+                <div>
+                  <label for="child-elementary-1">小学校</label>
+                  <select id="child-elementary-1" class="education-stage-select" data-stage="elementary">
+                    <option value="public">公立</option>
+                    <option value="private">私立</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="child-junior-high-1">中学校</label>
+                  <select id="child-junior-high-1" class="education-stage-select" data-stage="juniorHigh">
+                    <option value="public">公立</option>
+                    <option value="private">私立</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="child-high-school-1">高校</label>
+                  <select id="child-high-school-1" class="education-stage-select" data-stage="highSchool">
+                    <option value="public">公立</option>
+                    <option value="private">私立</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="child-university-1">大学</label>
+                  <select id="child-university-1" class="education-stage-select" data-stage="university">
+                    <option value="national">国公立</option>
+                    <option value="privateHumanities">私立文系</option>
+                    <option value="privateScience">私立理系</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -60,7 +81,7 @@
           <div class="child-card" data-child-card="2" hidden>
             <div class="child-title">
               <span>2人目</span>
-              <small>年齢と進学コース</small>
+              <small>年齢と進学先</small>
             </div>
             <div class="child-fields">
               <div>
@@ -70,15 +91,36 @@
                   <span>歳</span>
                 </div>
               </div>
-              <div>
-                <label for="child-course-2">2人目の進学コース</label>
-                <select id="child-course-2" class="child-course">
-                  <option value="8000000">全部公立：800万円</option>
-                  <option value="10000000">大学だけ私立文系：1,000万円</option>
-                  <option value="12000000">大学だけ私立理系：1,200万円</option>
-                  <option value="18000000">中学から私立：1,800万円</option>
-                  <option value="24000000">全部私立：2,400万円</option>
-                </select>
+              <div class="education-stage-grid" aria-label="2人目の進学先">
+                <div>
+                  <label for="child-elementary-2">小学校</label>
+                  <select id="child-elementary-2" class="education-stage-select" data-stage="elementary">
+                    <option value="public">公立</option>
+                    <option value="private">私立</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="child-junior-high-2">中学校</label>
+                  <select id="child-junior-high-2" class="education-stage-select" data-stage="juniorHigh">
+                    <option value="public">公立</option>
+                    <option value="private">私立</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="child-high-school-2">高校</label>
+                  <select id="child-high-school-2" class="education-stage-select" data-stage="highSchool">
+                    <option value="public">公立</option>
+                    <option value="private">私立</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="child-university-2">大学</label>
+                  <select id="child-university-2" class="education-stage-select" data-stage="university">
+                    <option value="national">国公立</option>
+                    <option value="privateHumanities">私立文系</option>
+                    <option value="privateScience">私立理系</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
@@ -86,7 +128,7 @@
           <div class="child-card" data-child-card="3" hidden>
             <div class="child-title">
               <span>3人目</span>
-              <small>年齢と進学コース</small>
+              <small>年齢と進学先</small>
             </div>
             <div class="child-fields">
               <div>
@@ -96,54 +138,97 @@
                   <span>歳</span>
                 </div>
               </div>
-              <div>
-                <label for="child-course-3">3人目の進学コース</label>
-                <select id="child-course-3" class="child-course">
-                  <option value="8000000">全部公立：800万円</option>
-                  <option value="10000000">大学だけ私立文系：1,000万円</option>
-                  <option value="12000000">大学だけ私立理系：1,200万円</option>
-                  <option value="18000000">中学から私立：1,800万円</option>
-                  <option value="24000000">全部私立：2,400万円</option>
-                </select>
+              <div class="education-stage-grid" aria-label="3人目の進学先">
+                <div>
+                  <label for="child-elementary-3">小学校</label>
+                  <select id="child-elementary-3" class="education-stage-select" data-stage="elementary">
+                    <option value="public">公立</option>
+                    <option value="private">私立</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="child-junior-high-3">中学校</label>
+                  <select id="child-junior-high-3" class="education-stage-select" data-stage="juniorHigh">
+                    <option value="public">公立</option>
+                    <option value="private">私立</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="child-high-school-3">高校</label>
+                  <select id="child-high-school-3" class="education-stage-select" data-stage="highSchool">
+                    <option value="public">公立</option>
+                    <option value="private">私立</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="child-university-3">大学</label>
+                  <select id="child-university-3" class="education-stage-select" data-stage="university">
+                    <option value="national">国公立</option>
+                    <option value="privateHumanities">私立文系</option>
+                    <option value="privateScience">私立理系</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="field">
-          <label for="current-savings">現在の教育費貯金額</label>
-          <div class="input-with-unit">
-            <input id="current-savings" name="current-savings" type="number" min="0" value="0" inputmode="numeric">
-            <span>円</span>
+        <fieldset class="field amount-field">
+          <legend>現在の教育費準備額</legend>
+          <div class="amount-breakdown">
+            <div class="amount-row">
+              <label for="current-savings-deposit">預金</label>
+              <div class="input-with-unit">
+                <input id="current-savings-deposit" class="current-savings-input" name="current-savings-deposit" type="number" min="0" value="0" inputmode="numeric">
+                <span>円</span>
+              </div>
+            </div>
+            <div class="amount-row">
+              <label for="current-savings-nisa">NISA</label>
+              <div class="input-with-unit">
+                <input id="current-savings-nisa" class="current-savings-input" name="current-savings-nisa" type="number" min="0" value="0" inputmode="numeric">
+                <span>円</span>
+              </div>
+            </div>
+            <div class="amount-row">
+              <label for="current-savings-insurance">学資保険</label>
+              <div class="input-with-unit">
+                <input id="current-savings-insurance" class="current-savings-input" name="current-savings-insurance" type="number" min="0" value="0" inputmode="numeric">
+                <span>円</span>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div class="field">
-          <label for="monthly-saving">家庭全体の毎月積立額</label>
-          <div class="input-with-unit">
-            <input id="monthly-saving" name="monthly-saving" type="number" min="0" value="30000" inputmode="numeric">
-            <span>円</span>
-          </div>
-          <p class="hint">子ども1人あたりではなく、家庭全体で毎月積み立てる金額です。</p>
-        </div>
-
-        <fieldset class="field method-field">
-          <legend>積立方法</legend>
-          <div class="radio-group">
-            <label class="radio-option">
-              <input type="radio" name="saving-method" value="deposit" checked>
-              <span>貯金</span>
-            </label>
-            <label class="radio-option">
-              <input type="radio" name="saving-method" value="insurance">
-              <span>学資保険</span>
-            </label>
-            <label class="radio-option">
-              <input type="radio" name="saving-method" value="nisa">
-              <span>NISA</span>
-            </label>
-          </div>
+          <p class="hint">3項目の合計を、現在の教育費準備額として計算します。</p>
         </fieldset>
+
+        <fieldset class="field amount-field">
+          <legend>今後の毎月積立額</legend>
+          <div class="amount-breakdown">
+            <div class="amount-row">
+              <label for="monthly-saving-deposit">預金</label>
+              <div class="input-with-unit">
+                <input id="monthly-saving-deposit" class="monthly-saving-input" name="monthly-saving-deposit" type="number" min="0" value="30000" inputmode="numeric">
+                <span>円</span>
+              </div>
+            </div>
+            <div class="amount-row">
+              <label for="monthly-saving-nisa">NISA</label>
+              <div class="input-with-unit">
+                <input id="monthly-saving-nisa" class="monthly-saving-input" name="monthly-saving-nisa" type="number" min="0" value="0" inputmode="numeric">
+                <span>円</span>
+              </div>
+            </div>
+            <div class="amount-row">
+              <label for="monthly-saving-insurance">学資保険</label>
+              <div class="input-with-unit">
+                <input id="monthly-saving-insurance" class="monthly-saving-input" name="monthly-saving-insurance" type="number" min="0" value="0" inputmode="numeric">
+                <span>円</span>
+              </div>
+            </div>
+          </div>
+          <p class="hint">子ども1人あたりではなく、家庭全体で毎月積み立てる合計額です。</p>
+        </fieldset>
+
       </form>
     </section>
 
@@ -175,7 +260,6 @@
           <strong id="total-cost">0円</strong>
         </div>
         <div class="result-item">
-          <span class="result-meta" id="result-saving-method">積立方法：貯金</span>
           <span class="result-label">18歳時点の予想資産額</span>
           <strong id="planned-savings">0円</strong>
         </div>
@@ -189,9 +273,11 @@
         入力すると結果が自動で更新されます。
       </div>
 
-      <div class="nisa-note" id="nisa-note" hidden>
-        <p>※年利5%で試算しています</p>
-        <p>※運用成果を保証するものではありません</p>
+      <div class="rate-note" id="rate-note">
+        <p>※教育費は文部科学省「学習費調査」等を参考にした目安です</p>
+        <p>※学校教育費だけでなく、塾・習い事・教材費などの学校外費用も含みます</p>
+        <p>※預金0%・NISA5%・学資保険0.5%で試算しています</p>
+        <p>※実際の教育費や運用結果は、進路・地域・家庭環境によって異なります</p>
       </div>
 
       <div class="result-card-actions">
@@ -218,7 +304,9 @@
             <p class="share-brand">education-cost-simulator</p>
           </div>
         </div>
-        <a class="download-card" id="download-result-card" href="#" download="education-cost-result.png">カード画像を保存</a>
+        <button type="button" class="save-card-button" id="save-result-card">画像を保存・共有する</button>
+        <p class="save-card-help" id="save-card-help" hidden>画像を長押しして保存してください。</p>
+        <img class="generated-card-image" id="generated-card-image" alt="保存用の結果カード画像" hidden>
       </div>
 
       <details class="calculation-details" open>
@@ -233,7 +321,7 @@
             <strong id="detail-total-cost">0円</strong>
           </div>
           <div class="details-row">
-            <span>現在の貯金額</span>
+            <span>現在の教育費準備額</span>
             <strong id="detail-current-savings">0円</strong>
           </div>
           <div class="details-row">
@@ -241,8 +329,8 @@
             <strong id="detail-monthly-saving">0円</strong>
           </div>
           <div class="details-row">
-            <span>積立方法</span>
-            <strong id="detail-saving-method">貯金</strong>
+            <span>試算利回り</span>
+            <strong id="detail-saving-rate">預金0%・NISA5%・学資保険0.5%</strong>
           </div>
           <div class="details-row">
             <span>一番下の子が18歳になるまでの残り月数</span>
