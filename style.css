@@ -744,6 +744,11 @@ input:focus {
   grid-template-columns: 1fr;
 }
 
+.details-row.rate-row {
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
 .details-row span {
   color: var(--muted);
   font-size: 0.86rem;
@@ -755,6 +760,12 @@ input:focus {
   text-align: right;
   color: var(--text);
   font-size: 0.95rem;
+}
+
+.details-row.rate-row strong {
+  text-align: left;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .details-row.emphasis strong {
